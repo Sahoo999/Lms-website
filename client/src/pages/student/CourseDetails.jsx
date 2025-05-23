@@ -19,10 +19,16 @@ const CourseDetails = () => {
     
   const {allCourses, calculateRating, calculateNoOfLectures, calculateCourseDuration, calculateChapterTime, currency} = useContext(AppContext)
 
-  const fetchCourseData = async ()=>{
-    const findCourse = allCourses.find(course => course._id === id)
+  const fetchCourseData = async () => {
+    const findCourse = allCourses.find(course => course._id === id);
+    if (findCourse) {
+      findCourse.enrolledStudents = findCourse.enrolledStudents || [];
+      findCourse.courseRatings = findCourse.courseRatings || [];
+      findCourse.courseContent = findCourse.courseContent || [];
+    }
     setCourseData(findCourse);
-  }
+  };
+  
   useEffect(()=>{
     fetchCourseData()
   },[allCourses])
@@ -58,7 +64,7 @@ const CourseDetails = () => {
                   ))}
                 </div>
                 <p className='text-gray-500'>({courseData.courseRatings.length} {courseData.courseRatings.length > 1 ? 'ratings' : 'rating'})</p>
-                <p>{courseData.enrolledStudents.length} {courseData.enrolledStudents.length > 1 ? 'students' : 'student'}</p>
+                <p>{courseData.enrolledStudents?.length || 0} {courseData.enrolledStudents?.length > 1 ? 'students' : 'student'}</p>
               </div>
 
               <p className='text-sm'>Course by <span className='text-blue-600 underline'>Sidharth Verma</span></p>

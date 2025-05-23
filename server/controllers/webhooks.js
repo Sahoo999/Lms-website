@@ -1,7 +1,7 @@
 import { Webhook } from "svix";
 import User from "../models/User.js";
-import Stripe from "stripe";
 import Purchase from "../models/Purchase.js";
+import Stripe from "stripe";
 import Course from "../models/Course.js";
 
 // API controller function to manage Clerk user with DB
@@ -55,7 +55,7 @@ export const clerkWebhooks = async (req, res) => {
     }
 };
 
-const stripeInstance = new Stripe(process.env.STRIPE_WEBHOOK_SECRET)
+const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 export const stripeWebhooks = async (request, responce)=>{
     const sig = request.headers['stripe-signature'];

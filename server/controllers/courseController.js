@@ -22,7 +22,7 @@ import Course from "../models/Course.js";
         courseData.courseContent.forEach(chapter =>{
           chapter.chaptercontent.forEach(lecture =>{
             if(!lecture.isPreviewFree){
-              lecture.lectureUrl = "";
+              lecture.lectureUrl = ""
             }
           })
         })
