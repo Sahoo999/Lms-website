@@ -7,7 +7,6 @@ export default async function handler(req, res) {
   
   return stripeWebhooks(req, res);
 }
-
 // Important for Vercel to handle raw body
 export const config = {
   api: {
