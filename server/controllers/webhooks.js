@@ -70,7 +70,7 @@ export const stripeWebhooks = async (request, response)=>{
   }
    // Handle the event
    switch (event.type) {
-    case 'checkout.session.completed': {
+    case 'payment_intent.succeeded': {
       const paymentIntent = event.data.object;
       const paymentIntentId = paymentIntent.id;
 

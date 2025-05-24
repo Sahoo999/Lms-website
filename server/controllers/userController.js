@@ -4,7 +4,6 @@ import Stripe from 'stripe';
 import Course from "../models/Course.js";
 import { courseProgress } from "../models/courseProgress.js";
 
-
 export const getUserData = async (req, res)=>{
  try {
     const userId = req.auth.userId
