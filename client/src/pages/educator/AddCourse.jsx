@@ -122,7 +122,14 @@ const [currentChapterId, setCurrentChapterId] = useState(null);
     <label htmlFor="thumbnailImage" className='flex items-center gap-3'>
       <img src={assets.file_upload_icon} alt="" className='p-3 bg-blue-500 rounded'/>
       <input type="file" id='thumbnailImage' onChange={e => setImage(e.target.files[0])} accept='image/*' hidden/>
-      <img src={Image ? URL.createObjectURL(Image) : ''} alt="" />
+     {Image && (
+  <img
+    src={URL.createObjectURL(Image)}
+    alt="Thumbnail preview"
+    className="w-20 h-20 object-cover rounded shadow"
+  />
+)}
+
     </label>
         </div>  
       </div>
