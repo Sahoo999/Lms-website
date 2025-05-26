@@ -60,7 +60,7 @@ export const updateRoleToEducator = async (req, res) => {
   // get educator dashboard data(total earning, enrolled students, no of courses)
 
    // get educator dashboard data(total earning, enrolled students, no of courses)
-export const educatorDashboardData = async (req, res) => { //  Added req, res parameters
+export const educatorDashboardData = async (req,res) => { //  Added req, res parameters
   try {
     const educator = req.auth.userId;
     const courses = await Course.find({educator});
@@ -73,9 +73,7 @@ export const educatorDashboardData = async (req, res) => { //  Added req, res pa
       courseId: {$in: courseIds},
       status: 'completed'
     });
-    
     const totalEarnings = purchases.reduce((sum, purchase)=> sum + purchase.amount, 0);
-    
     // collect unique enrolled student ids with their course titles
     const enrolledStudentsData = [];
     
@@ -83,7 +81,7 @@ export const educatorDashboardData = async (req, res) => { //  Added req, res pa
       const students = await User.find({
         _id: {$in: course.enrolledStudents}
       }, 'name imageUrl');
-      
+
       students.forEach(student => {
         enrolledStudentsData.push({
           courseTitle: course.courseTitle,
@@ -91,7 +89,6 @@ export const educatorDashboardData = async (req, res) => { //  Added req, res pa
         });
       });
     }
-    
     //  Moved response outside the loop and fixed property name
     res.json({
       success: true, 

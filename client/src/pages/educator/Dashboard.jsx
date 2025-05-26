@@ -12,6 +12,7 @@ const Dashboard = () => {
  const [dashboarddData, setDashboarddData] = useState(null)
  const fetchDashboarddData = async () =>{
    try {
+
      const token = await getToken();
      const {data} = await axios.get(backendUrl + '/api/educator/dashboard', {headers: {Authorization: `Bearer ${token}` }})
 
@@ -25,11 +26,13 @@ const Dashboard = () => {
    }
  }
 
+
  useEffect(() => {
   if(isEducator){
   fetchDashboarddData()
   }
  }, [isEducator])
+ 
 
   return dashboarddData ? (
     <div className='min-h-screen flex flex-col items-start justify-between gap-8 md:p-8 md:pb-0 p-4 pt-8 pb-0'>
