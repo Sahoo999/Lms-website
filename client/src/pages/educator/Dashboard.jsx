@@ -11,6 +11,7 @@ const Dashboard = () => {
   const {currency, backendUrl, isEducator, getToken} = useContext(AppContext)
  const [dashboarddData, setDashboarddData] = useState(null)
  const fetchDashboarddData = async () =>{
+
    try {
      const token = await getToken();
      const {data} = await axios.get(backendUrl + '/api/educator/dashboard', {headers: {Authorization: `Bearer ${token}` }})
@@ -24,6 +25,7 @@ const Dashboard = () => {
     toast.error(error.message)
    }
  }
+ 
 
  useEffect(() => {
   if(isEducator){
