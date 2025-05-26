@@ -2,6 +2,7 @@ import { clerkClient } from '@clerk/express';
 import Course from '../models/Course.js';
 import { v2 as cloudinary } from 'cloudinary';
 import Purchase from '../models/Purchase.js';
+import User from '../models/User.js'
 
 // Update role to educator
 export const updateRoleToEducator = async (req, res) => {
@@ -58,45 +59,54 @@ export const updateRoleToEducator = async (req, res) => {
 
   // get educator dashboard data(total earning, enrolled students, no of courses)
 
-   export const educatorDashboardData = async ()=>{
+   // get educator dashboard data(total earning, enrolled students, no of courses)
+export const educatorDashboardData = async (req, res) => { //  Added req, res parameters
   try {
     const educator = req.auth.userId;
     const courses = await Course.find({educator});
     const totalCourses = courses.length;
 
     const courseIds = courses.map(course => course._id);
-
- // total earning calculation
-   const purchases = await Purchase.find({
-    courseId: {$in: courseIds},
-    status: 'completed'
-   });
-
-   const totalEarnings = purchases.reduce((sum, purchase)=> sum + purchase.amount, 0);
-
-   // collect unique enrolled student ids with their course titles
+    
+    // total earning calculation
+    const purchases = await Purchase.find({
+      courseId: {$in: courseIds},
+      status: 'completed'
+    });
+    
+    const totalEarnings = purchases.reduce((sum, purchase)=> sum + purchase.amount, 0);
+    
+    // collect unique enrolled student ids with their course titles
     const enrolledStudentsData = [];
+    
     for(const course of courses){
       const students = await User.find({
         _id: {$in: course.enrolledStudents}
       }, 'name imageUrl');
-
-   students.forEach(student => {
-    enrolledStudentsData.push({
-      courseTitle: course.courseTitle,
-      student
-    });
-   });
-
-      res.json({success: true, dashboardData: {
-        totalEarnings, enrolledStudentsData, totalCourses
-      }})
-
+      
+      students.forEach(student => {
+        enrolledStudentsData.push({
+          courseTitle: course.courseTitle,
+          student
+        });
+      });
     }
+    
+    //  Moved response outside the loop and fixed property name
+    res.json({
+      success: true, 
+      dashboarddData: { //  Changed from 'dashboardData' to match frontend
+        totalEarnings, 
+        enrolledStudentsData, 
+        totalCourses
+      }
+    });
+
   } catch (error) {
+    console.error('Dashboard error:', error); //  Added logging
     res.json({success: false, message: error.message});
   }
-  }
+}
 
   // get enrolled students data with purchase data
   export const getenrolledStudentsData = async (req, res)=>{
